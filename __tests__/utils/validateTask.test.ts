@@ -1,6 +1,5 @@
 import { validateTaskTitle } from '../../src/utils/validateTask';
 
-// ─── Pruebas originales del código base ───────────────────────────────────────
 describe('validateTaskTitle', () => {
   describe('cuando el título es válido', () => {
     it('retorna null para un título con longitud válida', () => {
@@ -37,10 +36,10 @@ describe('validateTaskTitle', () => {
   });
 });
 
-// ─── Pruebas nuevas agregadas por Linney Florez ───────────────────────────────
-describe('validateTaskTitle - Casos adicionales', () => {
-  it('debe aceptar un título con caracteres alfanuméricos y números', () => {
-    expect(validateTaskTitle('Comprar 5 manzanas')).toBeNull();
+// ─── PRUEBAS NUEVAS AGREGADAS (Actividad 2) ──────────────────────────────────
+describe('validateTaskTitle - Pruebas Nuevas', () => {
+  it('debe aceptar un título que contiene números y símbolos comunes', () => {
+    expect(validateTaskTitle('Comprar 5 manzanas a $2.50!')).toBeNull();
   });
 
   it('debe ignorar espacios al inicio y al final para un título válido', () => {
@@ -51,7 +50,7 @@ describe('validateTaskTitle - Casos adicionales', () => {
     expect(validateTaskTitle('A')).toBe('El título debe tener al menos 3 caracteres');
   });
 
-  it('debe rechazar un título que parece válido pero tras el trim solo tiene 1 carácter (ej: "A  ")', () => {
+  it('debe rechazar un título que parece válido pero tras el trim solo tiene 1 carácter', () => {
     expect(validateTaskTitle('A  ')).toBe('El título debe tener al menos 3 caracteres');
   });
 

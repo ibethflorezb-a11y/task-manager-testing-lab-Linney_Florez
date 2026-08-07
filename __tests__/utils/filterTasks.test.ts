@@ -8,7 +8,6 @@ const mockTasks: Task[] = [
   { id: '4', title: 'Leer documentación de Jest', status: 'completed' },
 ];
 
-// ─── Pruebas originales del código base ───────────────────────────────────────
 describe('filterTasksByStatus', () => {
   it('devuelve solo las tareas con el estado indicado', () => {
     const result = filterTasksByStatus(mockTasks, 'completed');
@@ -32,8 +31,8 @@ describe('filterTasksByStatus', () => {
   });
 });
 
-// ─── Pruebas nuevas agregadas por Linney Florez ───────────────────────────────
-describe('filterTasksByStatus - Casos adicionales', () => {
+// ─── PRUEBAS NUEVAS AGREGADAS (Actividad 2) ──────────────────────────────────
+describe('filterTasksByStatus - Pruebas Nuevas', () => {
   const extendedTasks: Task[] = [
     { id: 't1', title: 'Aprender Jest', status: 'completed' },
     { id: 't2', title: 'Escribir pruebas', status: 'pending' },
@@ -41,13 +40,13 @@ describe('filterTasksByStatus - Casos adicionales', () => {
     { id: 't4', title: 'Subir a GitHub', status: 'archived' },
   ];
 
-  it('debe retornar únicamente las tareas "pending" y verificar sus IDs', () => {
+  it('debe retornar únicamente las tareas "pending" y verificar que los IDs coincidan', () => {
     const result = filterTasksByStatus(extendedTasks, 'pending');
     expect(result).toHaveLength(2);
     expect(result.map(t => t.id)).toEqual(['t2', 't3']);
   });
 
-  it('debe retornar un arreglo vacío cuando la lista de entrada está vacía', () => {
+  it('debe retornar un arreglo vacío (y ser instancia de Array) cuando la lista de entrada está vacía', () => {
     const result = filterTasksByStatus([], 'completed');
     expect(result).toBeInstanceOf(Array);
     expect(result).toHaveLength(0);
@@ -58,7 +57,7 @@ describe('filterTasksByStatus - Casos adicionales', () => {
       .toThrow('Estado inválido: in-progress');
   });
 
-  it('debe retornar todas las tareas sin importar su estado cuando se usa "all"', () => {
+  it('debe retornar una copia idéntica del arreglo original cuando se usa "all"', () => {
     const result = filterTasksByStatus(extendedTasks, 'all');
     expect(result).toEqual(extendedTasks);
   });

@@ -7,9 +7,9 @@ const mockTask = {
   title: 'Estudiar React Native con Testing Library',
   status: 'pending' as const,
 };
+
 const mockOnDelete = jest.fn();
 
-// ─── Pruebas originales del código base ───────────────────────────────────────
 describe('TaskCard', () => {
   beforeEach(() => {
     mockOnDelete.mockClear();
@@ -39,27 +39,36 @@ describe('TaskCard', () => {
   });
 });
 
-// ─── Pruebas nuevas agregadas por Linney Florez ───────────────────────────────
-describe('TaskCard - Casos adicionales', () => {
+// ─── PRUEBAS NUEVAS AGREGADAS (Actividad 2) ──────────────────────────────────
+describe('TaskCard - Pruebas Nuevas con fireEvent', () => {
+  const mockOnDelete = jest.fn();
+
   beforeEach(() => {
     mockOnDelete.mockClear();
   });
 
-  it('debe invocar onDelete con el ID correcto cuando hay múltiples tareas', async () => {
+  it('debe invocar onDelete con el ID correcto cuando hay múltiples tareas y se presiona Eliminar', async () => {
     const task = { id: 'xyz-99', title: 'Tarea con ID único', status: 'pending' as const };
     await render(<TaskCard task={task} onDelete={mockOnDelete} />);
-    await fireEvent.press(screen.getByText('Eliminar'));
+    
+    const deleteButton = screen.getByText('Eliminar');
+    await fireEvent.press(deleteButton);
+    
     expect(mockOnDelete).toHaveBeenCalledWith('xyz-99');
   });
 
-  it('no debe invocar onDelete si el botón no fue presionado', async () => {
-    await render(<TaskCard task={mockTask} onDelete={mockOnDelete} />);
+  it('no debe invocar onDelete si el botón de Eliminar no fue presionado', async () => {
+    const task = { id: 'abc-123', title: 'Tarea sin acción', status: 'pending' as const };
+    await render(<TaskCard task={task} onDelete={mockOnDelete} />);
+    
     expect(mockOnDelete).not.toHaveBeenCalled();
   });
 
-  it('debe mostrar el botón de eliminar con el label de accesibilidad correcto', async () => {
+  it('debe mostrar el botón de eliminar con el label de accesibilidad dinámico correcto', async () => {
     const task = { id: '2', title: 'Tarea accesible', status: 'pending' as const };
     await render(<TaskCard task={task} onDelete={mockOnDelete} />);
-    expect(screen.getByLabelText('Eliminar tarea Tarea accesible')).toBeTruthy();
+    
+    const deleteButton = screen.getByLabelText('Eliminar tarea Tarea accesible');
+    expect(deleteButton).toBeTruthy();
   });
 });
